@@ -11,6 +11,8 @@ class Quiz
  
        //Номер текущего вопроса
        this.current = 0;
+
+       this.quantity = questions.length;
    }
    
    //метод для получение json строки из массива ответов юзера
@@ -24,7 +26,8 @@ class Quiz
 //Класс, представляющий вопрос
 class Question
 {
-   constructor(id,type,text,nextQuestion)
+  // NextQuestion2 - второй вопрос для ветвления вопростов 2 типа 
+  constructor(id,type,text,nextQuestion, nextQuestion2 = null)
    {   
        //id вопроса из бд ,дальше его можно использовать для ответов юзера  
        this.id=id;
@@ -35,6 +38,7 @@ class Question
        this.text = text;
        //объект след вопроса 
        this.nextQuestion=nextQuestion;
+       this.nextQuestion2=nextQuestion2;
    }
  
 }
@@ -51,11 +55,17 @@ class Answer
    }
 }
 
+//нулевой вопрос это костыль чтобы всё работало(надо исправить наверное)
+//в конце последнего вопроса обязательно null 
 const Questions=[
-    new Question(1,1,"Насколько сложными для вас являются задания?",2),
-    new Question(2,1,"Насколько удобен и понятен для вас интерфейс платформы?",3),
-    new Question(3,1,"Насколько хорошо работает коллаборативная деятельность?",4),
-    new Question(4,2,"Хватает ли рекомендаций по грамматике от платформы при прохождении курса?",null),
+    new Question(0, 1, "костыль", 1),
+    new Question(1, 1, "Насколько сложными для вас являются задания?", 2),
+    new Question(2, 1, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
+    new Question(3, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
+    new Question(4, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
+    new Question(5, 2, "Вам понравился опрос?", 6, 7),
+    new Question(6, 1, "Напишите почему нет(тут нужно поставить чтекствое поле или что-то подобное)", null),
+    new Question(7, 1, "Оцените его", null),
 ] 
 
 
@@ -69,13 +79,19 @@ function saveAnswer()
     var answers;
      answers=document.getElementsByName("ans_radio");
     
+    var result;
+
     if(answers!=null){
     for(let rad of answers)
-      if(rad.checked)
+      if(rad.checked){
+        result = rad.value;
         quiz.answers.push(new Answer(quiz.questions[quiz.current].type,rad.value));
+      }
     }//для развернутого ответа 
     // если будут другие типы ответов изменим этот метод
     else  answers=document.getElementsByName("ans_text");    
+
+    return result;
 }
 
 
@@ -84,12 +100,20 @@ function Update()
 {   
     console.log(quiz.current);
     //сохраняем ответ на текущий вопрос 
-    saveAnswer();
+    var answer = saveAnswer();
     document.getElementById("check").innerHTML="Дальше";
 
-    quiz.current=quiz.questions[quiz.current].nextQuestion;
+    if(quiz.questions[quiz.current].type == 1)
+      quiz.current=quiz.questions[quiz.current].nextQuestion;
+    else if(quiz.questions[quiz.current].type == 2){
+      if(answer == 1)
+        quiz.current=quiz.questions[quiz.current].nextQuestion;
+      else
+        quiz.current=quiz.questions[quiz.current].nextQuestion2;
+    }
+      //quiz.current++;
    //Проверяем, есть ли ещё вопросы
-   if(quiz.current<quiz.questions.length){
+   if(quiz.current){
        
        //меняем вопрос 
        document.getElementById("head").innerHTML = quiz.questions[quiz.current].text;
@@ -110,9 +134,9 @@ function Update()
            case 2:CreateAnswers_secondType();break;
        }  
 
-       document.getElementById("pages").innerHTML = (quiz.current + 1) + " / " + quiz.questions.length;  
+       document.getElementById("pages").innerHTML = (quiz.current) + " / " + (quiz.questions.length - 1);  
    } else {
-       alert("заглушка");
+       //alert("заглушка");
        buttons.innerHTML="";
        document.getElementById("head").innerHTML = "Спасибо!"
       console.log(quiz.answers);
@@ -164,7 +188,7 @@ function Init()
        "\n" + "он поможет нам усовершенствовать наше приложение для вас."
        var beginButton=document.getElementById("check");
        beginButton.innerHTML="Начнем!";
-       quiz.current=-1;
+       //quiz.current=-1;
       
        //document.getElementById("pages").innerHTML = (quiz.current + 1) + " / " + quiz.questions.length;     
 }
