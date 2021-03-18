@@ -70,8 +70,10 @@ const Questions=[
 
 
 const quiz=new Quiz(Questions);
-Init();
 const buttons=document.getElementById("buttons");
+const beginButton=document.getElementById("check");
+var gotAnswer=false;
+Init();
 
 
 function saveAnswer()
@@ -80,17 +82,32 @@ function saveAnswer()
      answers=document.getElementsByName("ans_radio");
     
     var result;
-
-    if(answers!=null){
-    for(let rad of answers)
-      if(rad.checked){
-        result = rad.value;
-        quiz.answers.push(new Answer(quiz.questions[quiz.current].type,rad.value));
-      }
-    }//для развернутого ответа 
+     
+    
+    if(answers.length>0)
+    {  
+      gotAnswer=false;
+       for(let rad of answers)
+        {
+          if(rad.checked)
+          {
+            gotAnswer=true;
+            result = rad.value;
+            quiz.answers.push(new Answer(quiz.questions[quiz.current].type,rad.value));
+          }
+        } 
+       
+        if(!gotAnswer)
+          beginButton.setAttribute("disable","true");
+         
+    }
+    //для развернутого ответа 
     // если будут другие типы ответов изменим этот метод
-    else  answers=document.getElementsByName("ans_text");    
-
+    else  { 
+       answers=document.getElementsByName("ans_text");    
+       gotAnswer=true;
+    }
+    console.log(gotAnswer);
     return result;
 }
 
@@ -98,10 +115,18 @@ function saveAnswer()
 //Обновление теста
 function Update()
 {   
+   
+
+    beginButton.setAttribute("disable","false");
+     
     console.log(quiz.current);
     //сохраняем ответ на текущий вопрос 
     var answer = saveAnswer();
-    document.getElementById("check").innerHTML="Дальше";
+    console.log(gotAnswer);
+    if(!gotAnswer) return;
+
+
+    beginButton.innerHTML="Дальше";
 
     if(quiz.questions[quiz.current].type == 1)
       quiz.current=quiz.questions[quiz.current].nextQuestion;
@@ -111,7 +136,7 @@ function Update()
       else
         quiz.current=quiz.questions[quiz.current].nextQuestion2;
     }
-      //quiz.current++;
+     
    //Проверяем, есть ли ещё вопросы
    if(quiz.current){
        
@@ -134,13 +159,14 @@ function Update()
            case 2:CreateAnswers_secondType();break;
        }  
 
-       document.getElementById("pages").innerHTML = (quiz.current) + " / " + (quiz.questions.length - 1);  
+      // document.getElementById("pages").innerHTML = (quiz.current) + " / " + (quiz.questions.length - 1);  
    } else {
        //alert("заглушка");
        buttons.innerHTML="";
        document.getElementById("head").innerHTML = "Спасибо!"
       console.log(quiz.answers);
    }
+   gotAnswer=true;
 }
  
 /*value - значение аттрибута value radiobutton , innerhtml- текст для отображения в данном случае - номер ответа/или текст ответа */
@@ -155,7 +181,7 @@ function CreateRadio(value,innerHtml)
      radiobutton.setAttribute("type","radio");
      radiobutton.setAttribute("name","ans_radio");
      radiobutton.setAttribute("type","radio");
-     radiobutton.setAttribute("value",value);
+     radiobutton.setAttribute("value",value+1);
      paragraph.appendChild(radiobutton);
      buttons.appendChild(paragraph);
   
@@ -186,9 +212,7 @@ function Init()
 {            
        document.getElementById("head").innerHTML="Пожалуйста, пройдите наш опрос"+
        "\n" + "он поможет нам усовершенствовать наше приложение для вас."
-       var beginButton=document.getElementById("check");
        beginButton.innerHTML="Начнем!";
-       //quiz.current=-1;
-      
-       //document.getElementById("pages").innerHTML = (quiz.current + 1) + " / " + quiz.questions.length;     
+       
+         
 }
