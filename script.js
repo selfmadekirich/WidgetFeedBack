@@ -60,7 +60,7 @@ class Answer
 const Questions=[
     new Question(0, 1, "костыль", 1),
     new Question(1, 1, "Насколько сложными для вас являются задания?", 2),
-    new Question(2, 1, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
+    new Question(2, 3, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
     new Question(3, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
     new Question(4, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
     new Question(5, 2, "Вам понравился опрос?", 6, 7),
@@ -85,7 +85,8 @@ function saveAnswer()
      answers=document.getElementsByName("rating");
     
     var result;
-     
+    
+    
     
     if(answers.length>0)
     {  
@@ -106,9 +107,12 @@ function saveAnswer()
     }
     //для развернутого ответа 
     // если будут другие типы ответов изменим этот метод
-    else  { 
+    else  {
+      gotAnswer=true;
        answers=document.getElementsByName("ans_text");    
-       gotAnswer=true;
+       if(answers.length > 0){
+          quiz.answers.push(new Answer(quiz.questions[quiz.current].type, answers.value));
+        }
     }
     console.log(gotAnswer);
     return result;
@@ -131,13 +135,14 @@ function Update()
 
     beginButton.innerHTML="Дальше";
 
-    if(quiz.questions[quiz.current].type == 1)
-      quiz.current=quiz.questions[quiz.current].nextQuestion;
-    else if(quiz.questions[quiz.current].type == 2){
+    if(quiz.questions[quiz.current].type == 2){
       if(answer == 1)
         quiz.current=quiz.questions[quiz.current].nextQuestion;
       else
         quiz.current=quiz.questions[quiz.current].nextQuestion2;
+    }
+    else {
+      quiz.current=quiz.questions[quiz.current].nextQuestion;
     }
      
    //Проверяем, есть ли ещё вопросы
@@ -160,6 +165,7 @@ function Update()
        {
            case 1:CreateAnswers_firstType();break;
            case 2:CreateAnswers_secondType();break;
+           case 3:CreateAnswers_thirdType();break;
        }  
 
     
@@ -183,11 +189,33 @@ function CreateRadio(value,innerHtml)
      var radiobutton=document.createElement("input");
      radiobutton.setAttribute("type","radio");
      radiobutton.setAttribute("name","ans_radio");
-     radiobutton.setAttribute("type","radio");
      radiobutton.setAttribute("value",value+1);
      paragraph.appendChild(radiobutton);
      buttons.appendChild(paragraph);
   
+}
+
+function CreateText()
+{
+     //использую p для вывода текста ,тк у radio нет innerhtml
+     var paragraph=document.createElement("p");
+     
+     //создаю radio button ,вешаю нужные аттрибуты 
+     var textfield=document.createElement("TEXTAREA");
+     textfield.setAttribute("maxlength", 500);
+     textfield.setAttribute("rows", 10);
+     textfield.setAttribute("cols", 45);
+     textfield.value = "aaaa";
+     textfield.setAttribute("placeholder", "Введите текст...");
+     textfield.setAttribute("name","ans_text");
+     paragraph.appendChild(textfield);
+     buttons.appendChild(paragraph);
+     console.log(textfield.value);
+}
+
+function CreateAnswers_thirdType()
+{
+  CreateText();  
 }
 
 function CreateAnswers_secondType()
