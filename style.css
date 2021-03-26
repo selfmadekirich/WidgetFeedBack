@@ -68,11 +68,14 @@ body, html
    background: #6477EB;
    color: #fff;
    padding: 10px 25px;
-   width: 70%;
+   width: 60%;
    font-size: 15pt;
    display: block;
-   margin: 2px auto;
+   left: 20%;
+   right: auto;
+   bottom: 10%;
    cursor: pointer;
+   position: absolute;
 }
  
 .button__content{
