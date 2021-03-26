@@ -1,0 +1,90 @@
+﻿@model IEnumerable<WebApplication1.Models.Question>
+
+@{
+    ViewData["Title"] = "ShowQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Таблица Вопросов</h1>
+
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+
+
+<p>
+    <a asp-action="Create">Создать вопрос</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ques)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextQues1)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NextQues2)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ques)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextQues1)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.NextQues2)
+                </td>
+
+
+                <td>
+                    <a class="ActionSelect" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a  asp-action="Edit" asp-route-id="@item.Id">Редактировать</a>
+                </td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+
+    $(function () {
+        $.ajaxSetup({ cache: false });
+        $(".ActionSelect").click(function (e) {
+
+            e.preventDefault();
+
+            $.get(this.href, function (data) {
+                $('#dialogContent').html(data);
+                $('#modDialog').modal('show');
+            });
+        });
+    });
+</script>
