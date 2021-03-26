@@ -25,26 +25,12 @@ a:active {
 	display: -ms-flexbox;
 	display: flex;
 	margin: auto;
-	-webkit-box-shadow: 0 0.5rem 1rem rgba(0, 0, 16, 0.19), 0 0.3rem 0.3rem rgba(0, 0, 16, 0.23);
-	box-shadow: 0 0.5rem 1rem rgba(0, 0, 16, 0.19), 0 0.3rem 0.3rem rgba(0, 0, 16, 0.23);
-	background-color: rgb(255, 255, 255);
 	padding: 0.8rem;
 	width: 90%;
-  display: grid;
+	display: block;
 	font-family: sans-serif;
 	color: rgba(0, 0, 16, 0.8);
 	font-weight: 600;
-}
-
-.rating-container {
-	display: -webkit-box;
-	display: -ms-flexbox;
-	display: flex;
-	-webkit-box-pack: justify;
-	-ms-flex-pack: justify;
-	justify-content: space-between;
-	padding: 0.4rem 0rem;
-	width: 100%;
 }
 
 .card .rating-text p {
@@ -55,21 +41,14 @@ a:active {
 
 .card .rating {
 	background-color: rgba(0, 0, 16, 0.8);
-	padding: 0.4rem 0.4rem 0.1rem 0.4rem;
 	border-radius: 2.2rem;
 }
 
 .card svg {
 	fill: rgb(242, 242, 242);
-	height: 3.6rem;
-	width: 3.6rem;
-	margin: 0.2rem;
-}
-
-.card .rating-form-2 svg {
-	height: 3rem;
-	width: 3rem;
-	margin: 0.5rem;
+	height: 40px;
+	width: 40px;
+	margin: 0.1rem;
 }
 
 .card #radios label {
@@ -88,6 +67,18 @@ a:active {
 
 .card input + svg {
 	cursor: pointer;
+}
+
+.card input[class="yes"]:hover + svg,
+input[class="yes"]:checked + svg,
+input[class="yes"]:focus + svg {
+	fill: rgb(0, 214, 20);
+}
+
+.card input[class="no"]:hover + svg,
+input[class="no"]:checked + svg,
+input[class="no"]:focus + svg {
+	fill: rgb(255, 20, 0);
 }
 
 .card input[class="super-happy"]:hover + svg,
