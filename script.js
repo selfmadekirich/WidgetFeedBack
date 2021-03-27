@@ -86,8 +86,6 @@ function saveAnswer()
     
     var result;
     
-    
-    
     if(answers.length>0)
     {  
       gotAnswer=false;
@@ -203,14 +201,13 @@ function CreateText()
      //создаю radio button ,вешаю нужные аттрибуты 
      var textfield=document.createElement("TEXTAREA");
      textfield.setAttribute("maxlength", 500);
-     textfield.setAttribute("rows", 10);
-     textfield.setAttribute("cols", 45);
-     textfield.value = "aaaa";
+     textfield.setAttribute("rows", 5);
+     //textfield.value = "aaaa";
      textfield.setAttribute("placeholder", "Введите текст...");
      textfield.setAttribute("name","ans_text");
      paragraph.appendChild(textfield);
      buttons.appendChild(paragraph);
-     console.log(textfield.value);
+     //console.log(textfield.value);
 }
 
 function CreateAnswers_thirdType()
