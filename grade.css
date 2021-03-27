@@ -110,3 +110,18 @@ input[class="super-sad"]:checked + svg,
 input[class="super-sad"]:focus + svg {
 	fill: rgb(239, 42, 16);
 }
+
+.card textarea {
+   border: 0px solid #cccccc; 
+   border-radius: 3px;
+   -webkit-border-radius: 3px; 
+   -moz-border-radius: 3px; 
+   -khtml-border-radius: 3px; 
+   background: rgba(0, 0, 16, 0) !important; 
+   outline: none; 
+   width: 80%;
+   color: #fff; 
+   font-size: 11px;
+   font-family: Tahoma; 
+   resize: none;
+}
