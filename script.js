@@ -220,8 +220,19 @@ function CreateAnswers_thirdType()
 
 function CreateAnswers_secondType()
 {
-  CreateRadio(1,"Да");
-  CreateRadio(2,"Нет");
+  buttons.innerHTML+=
+  `<label for="no"> 
+  <input type="radio" name="rating" class="no" id="no" value="1" />
+  <svg viewBox="0 0 24 24">
+  <rect transform="rotate(45, 10, 10)" id="svg_11" height="20" width="2.5" y="0.0" x="9" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="null"/>
+  <rect transform="rotate(-45, 10, 10)" id="svg_12" height="20" width="2.5" y="0.0" x="9" fill-opacity="null" stroke-opacity="null" stroke-width="NaN" stroke="null" fill="null"/>
+</svg>
+  </label>
+
+<label for="yes">
+  <input type="radio" name="rating" class="yes" id="yes" value="2" />
+  <svg  viewBox="0 0 24 24"><path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
+  </label>`;
   //и соответственно сделать переадресацию на нужный вопрос
   // переадресация ( в этом контексте) - указать нужный номер след вопроса
 }
