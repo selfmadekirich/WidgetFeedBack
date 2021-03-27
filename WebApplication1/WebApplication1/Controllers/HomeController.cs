@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
+using WebApplication1.ViewsModel;
 
 namespace WebApplication1.Controllers
 {
@@ -111,9 +112,20 @@ namespace WebApplication1.Controllers
         }
 
 
-        public IActionResult ShowResult()
+        public IActionResult ShowResults()
         {
-            return View();
+            List<Answer> lst = new List<Answer>() { new Answer() { Id=1,QuestionId=1,Question=new Question(){ Id=1,Ques="1"},Result="3"},
+             new Answer() { Id=2,Question=new Question(){ Id=3,Ques="1"},QuestionId=3,Result="3"},
+             new Answer() { Id=3,Question=new Question(){ Id=2,Ques="1"},QuestionId=2,Result="3"},
+             new Answer() { Id=4,Question=new Question(){ Id=1,Ques="1"},QuestionId=1,Result="3"},
+              new Answer() { Id=5,Question=new Question(){ Id=1,Ques="1"},QuestionId=1,Result="3"},
+               new Answer() { Id=6,Question=new Question(){ Id=2,Ques="1"},QuestionId=2,Result="3"},
+                new Answer() { Id=7,Question=new Question(){ Id=3,Ques="1"},QuestionId=3,Result="3"}
+
+            };
+            var temp = new ShowUsersAnswers(lst);
+
+            return View(temp);
         }
 
         [HttpGet]

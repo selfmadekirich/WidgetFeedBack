@@ -1,0 +1,50 @@
+﻿@model WebApplication1.ViewsModel.ShowUsersAnswers
+
+@{
+    ViewData["Title"] = "ShowResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Ответы пользователей</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Номер вопроса
+            </th>
+            <th>
+                формулировка вопроса
+            </th>
+            <th>
+                Количество ответов
+            </th>
+            <th>
+                Средняя оценка
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.rates)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Question)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Average)
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>

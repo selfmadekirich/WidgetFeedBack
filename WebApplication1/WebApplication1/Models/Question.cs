@@ -10,7 +10,7 @@ namespace WebApplication1.Models
 {
     public class Question
     {
-
+        [DisplayName("номер")]
         public int Id { get; set; }
 
         [DisplayName("тип вопроса")]
