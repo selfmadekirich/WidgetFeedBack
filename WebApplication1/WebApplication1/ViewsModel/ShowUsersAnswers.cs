@@ -14,7 +14,7 @@ namespace WebApplication1.ViewsModel
             var temp = ans.Select(x => x.QuestionId).Distinct();
              rates = temp.Select(x =>
                              new UserAnswersRates(
-                                ans.Where(y => (x == y.QuestionId) && y.Type.Contains("Оценка по шкале")))).ToList();
+                                ans.Where(y => (x == y.QuestionId) && y.Type.Contains("1")))).ToList();
             
         }
         public IEnumerable<UserAnswersRates> rates { get;private set; }

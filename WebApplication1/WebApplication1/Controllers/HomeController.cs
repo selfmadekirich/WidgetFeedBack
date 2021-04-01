@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using WebApplication1.Models;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.ViewsModel;
+using Newtonsoft.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -23,6 +24,8 @@ namespace WebApplication1.Controllers
         void DeleteQuestion(int id);
 
         void Create(Question q);
+
+        void SaveWidgetAnswers(IEnumerable<Answer> answers);
     }
 
     public class DBWorker : IDBworker
@@ -76,6 +79,11 @@ namespace WebApplication1.Controllers
             _dbContext.SaveChanges();
         }
 
+        public async void SaveWidgetAnswers(IEnumerable<Answer> answers)
+        {
+            await _dbContext.AddRangeAsync(answers);
+            _dbContext.SaveChanges();
+        }
     }
 
 
@@ -83,13 +91,13 @@ namespace WebApplication1.Controllers
     public class HomeController : Controller
     {
         IDBworker _dbworker;
-       
+
         public HomeController(IDBworker _db)
         {
             _dbworker = _db;
         }
 
-        public  IActionResult ShowQuestions()   
+        public IActionResult ShowQuestions()
         {
             return View(_dbworker.GetAllQuestionsAsync().Result);
         }
@@ -97,7 +105,7 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            return View();   
+            return View();
         }
 
         [HttpPost]
@@ -132,12 +140,12 @@ namespace WebApplication1.Controllers
 
             if (QuestionForEdit == null)
                 return NotFound();
-            
+
             return View(QuestionForEdit);
         }
 
         [HttpPost]
-        public IActionResult Edit(int Id,[Bind("Type,Ques,NextQues1,NextQues2")] Question q)
+        public IActionResult Edit(int Id, [Bind("Type,Ques,NextQues1,NextQues2")] Question q)
         {
             if (q == null)
                 return NotFound();
@@ -152,16 +160,29 @@ namespace WebApplication1.Controllers
         [HttpGet]
         public IActionResult Delete(int id)
         {
-            var q=_dbworker.GetQuestionIdNoTracking(id);
+            var q = _dbworker.GetQuestionIdNoTracking(id);
             return PartialView(q);
         }
 
         [HttpPost]
-        public IActionResult Delete([Bind("Id")]Question q)
+        public IActionResult Delete([Bind("Id")] Question q)
         {
             _dbworker.DeleteQuestion(q.Id);
             return RedirectToAction(nameof(ShowQuestions));
         }
+
+        [HttpGet]
+        public IActionResult widget() => View();
+
+        [HttpPost]
+        public bool saveAnswers(string data)
+        {
+            var ReceivedData = JsonConvert.DeserializeObject<IEnumerable<Answer>>(data);
+            _dbworker.SaveWidgetAnswers(ReceivedData);
+            return true;
+        }
+        
+        
 
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

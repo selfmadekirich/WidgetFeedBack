@@ -31,6 +31,7 @@ namespace WebApplication1
 
             services.AddDbContext<DBContext>(opt=>opt.UseNpgsql("Host=ec2-54-198-73-79.compute-1.amazonaws.com;Port=5432;Database=dm32jm37cam5l;Username=nubnqeaebxzkbb;Password=1ae778c58a94903aec193b54c131ed1cd558a7364c0659aea6907c17445dedc5;SslMode=Require;Trustservercertificate=true"));
             services.AddTransient<IDBworker, DBWorker>();
+            services.AddAntiforgery(o => o.SuppressXFrameOptionsHeader = true);
         }
 
         
