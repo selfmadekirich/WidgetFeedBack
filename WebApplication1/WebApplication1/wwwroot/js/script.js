@@ -55,13 +55,13 @@ class Answer
 //в конце последнего вопроса обязательно null 
 const Questions=[
     new Question(0, 1, "костыль", 1),
-    new Question(1, 1, "Насколько сложными для вас являются задания?", 2),
-    new Question(2, 3, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
-    new Question(3, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
-    new Question(4, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
-    new Question(5, 2, "Вам понравился опрос?", 6, 7),
-    new Question(6, 1, "Напишите почему нет(тут нужно поставить чтекствое поле или что-то подобное)", null),
-    new Question(7, 1, "Оцените его", null),
+    new Question(4, 1, "Насколько сложными для вас являются задания?", 2),
+    new Question(5, 3, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
+    new Question(6, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
+    new Question(7, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
+    new Question(8, 2, "Вам понравился опрос?", 6, 7),
+    new Question(9, 1, "Напишите почему нет(тут нужно поставить чтекствое поле или что-то подобное)", null),
+    new Question(10, 1, "Оцените его", null),
 ] 
 
 
@@ -75,39 +75,48 @@ document.getElementById("card").setAttribute("hidden","true");
 Init();
 
 
-function saveAnswer(id)
-{  
+function saveAnswer(id) {
     var answers;
-     answers=document.getElementsByName("rating");
-    
+    answers = document.getElementsByName("rating");
+
     var result;
-    
-    if(answers.length>0)
-    {  
-      gotAnswer=false;
-       for(let rad of answers)
-        {
-          if(rad.checked)
-          {
-            gotAnswer=true;
-            result = rad.value;
-            quiz.answers.push(new Answer(quiz.questions[quiz.current].type,rad.value,id));
-          }
-        } 
-       
-        if(!gotAnswer)
-          beginButton.setAttribute("disable","true");
-         
+
+
+
+    if (document.getElementsByName("rating").length > 0) {
+        answers = document.getElementsByName("rating");
+        gotAnswer = false;
+        for (let rad of answers) {
+            if (rad.checked) {
+                gotAnswer = true;
+                result = rad.value;
+                quiz.answers.push(new Answer(quiz.questions[quiz.current].type, rad.value,id));
+            }
+        }
+
+
+
     }
     //для развернутого ответа 
     // если будут другие типы ответов изменим этот метод
-    else  {
-      gotAnswer=true;
-       answers=document.getElementsByName("ans_text");    
-       if(answers.length > 0){
-          quiz.answers.push(new Answer(quiz.questions[quiz.current].type, answers.value,id));
+    else if (document.getElementsByName("ans_text").length > 0) {
+        gotAnswer = false;
+        answers = document.getElementsByName("ans_text");
+
+        // минимальное количество символов
+        if (answers[0].value.length > 1) {
+            gotAnswer = true;
+            quiz.answers.push(new Answer(quiz.questions[quiz.current].type, answers[0].value,id));
         }
     }
+    else {
+        gotAnswer = true;
+    }
+
+    if (!gotAnswer)
+        beginButton.setAttribute("disable", "true");
+
+    console.log(gotAnswer);
     return result;
 }
 

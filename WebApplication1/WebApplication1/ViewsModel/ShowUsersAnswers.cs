@@ -11,7 +11,7 @@ namespace WebApplication1.ViewsModel
 
         public ShowUsersAnswers(IEnumerable<Answer> ans)
         {
-            var temp = ans.Select(x => x.QuestionId).Distinct();
+            var temp = ans.Where(x=>x.Type.Contains("1")).Select(x => x.QuestionId).Distinct();
              rates = temp.Select(x =>
                              new UserAnswersRates(
                                 ans.Where(y => (x == y.QuestionId) && y.Type.Contains("1")))).ToList();
@@ -29,9 +29,9 @@ namespace WebApplication1.ViewsModel
 
         private int Sum { get; set; }
 
-        public double Average
+        public string Average
         {
-            get {if(Amount>0) return Sum / Amount; return 0; }
+            get {if(Amount>0) return (Sum*1.0 / Amount).ToString("0.00"); return 0+""; }
         }
 
         public string Question { get; set; }

@@ -80,7 +80,8 @@ namespace WebApplication1.Controllers
         }
 
         public async void SaveWidgetAnswers(IEnumerable<Answer> answers)
-        {
+        {   
+
             await _dbContext.AddRangeAsync(answers);
             _dbContext.SaveChanges();
         }
@@ -122,9 +123,15 @@ namespace WebApplication1.Controllers
 
         public IActionResult ShowResults()
         {
-            var temp = new ShowUsersAnswers(_dbworker.GetAllAnswersAsync().Result);
+            var answers = _dbworker.GetAllAnswersAsync().Result;
+            var questions = _dbworker.GetAllQuestionsAsync().Result;
 
-            return View(temp);
+            foreach (var a in answers)
+            {
+                a.Question = new Question() { Id = a.QuestionId, Ques = questions.FirstOrDefault(x => x.Id == a.QuestionId).Ques };
+            }
+
+            return View(new ShowUsersAnswers(answers));
         }
 
         [HttpGet]
