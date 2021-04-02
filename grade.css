@@ -46,8 +46,8 @@ a:active {
 
 .card svg {
 	fill: rgb(242, 242, 242);
-	height: 40px;
-	width: 40px;
+	height: 16%;
+	width: 16%;
 	margin: 0.1rem;
 }
 
@@ -121,7 +121,7 @@ input[class="super-sad"]:focus + svg {
    outline: none; 
    width: 80%;
    color: #fff; 
-   font-size: 11px;
+   font-size: 1em;
    font-family: Tahoma; 
    resize: none;
 }

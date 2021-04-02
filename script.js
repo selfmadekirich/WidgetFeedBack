@@ -15,6 +15,11 @@ class Quiz
        this.quantity = questions.length;
    }
    
+   //метод для получение json строки из массива ответов юзера
+     ConvertAnswersToJSON()
+     {
+         return JSON.stringify(this.answer);
+     }
  
 }
  
@@ -41,13 +46,12 @@ class Question
 //Класс, представляющий ответ
 class Answer
 {
-   constructor(type, value,id)
+   constructor(type, value)
    {   
        //type - совпадает с типом вопроса 
        this.type = type;
        //ответ пользователя 
        this.value = value;
-       this.id = id;
    }
 }
 
@@ -55,13 +59,13 @@ class Answer
 //в конце последнего вопроса обязательно null 
 const Questions=[
     new Question(0, 1, "костыль", 1),
-    new Question(4, 1, "Насколько сложными для вас являются задания?", 2),
-    new Question(5, 3, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
-    new Question(6, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
-    new Question(7, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
-    new Question(8, 2, "Вам понравился опрос?", 6, 7),
-    new Question(9, 1, "Напишите почему нет(тут нужно поставить чтекствое поле или что-то подобное)", null),
-    new Question(10, 1, "Оцените его", null),
+    new Question(1, 1, "Насколько сложными для вас являются задания?", 2),
+    new Question(2, 3, "Насколько удобен и понятен для вас интерфейс платформы?", 3),
+    new Question(3, 1, "Насколько хорошо работает коллаборативная деятельность?", 4),
+    new Question(4, 2, "Хватает ли рекомендаций по грамматике от платформы при прохождении курса?", 5, 5),
+    new Question(5, 2, "Вам понравился опрос?", 6, 7),
+    new Question(6, 1, "Напишите почему нет(тут нужно поставить чтекствое поле или что-то подобное)", null),
+    new Question(7, 1, "Оцените его", null),
 ] 
 
 
@@ -69,88 +73,58 @@ const quiz=new Quiz(Questions);
 const buttons=document.getElementById("rating");
 const beginButton=document.getElementById("check");
 var gotAnswer=false;
-
-document.getElementById("card").setAttribute("hidden","true");
+var show = true;
 
 Init();
 
 
-function saveAnswer(id) {
+function saveAnswer()
+{  
     var answers;
-    answers = document.getElementsByName("rating");
-
+     answers=document.getElementsByName("rating");
+    
     var result;
-
-
-
-    if (document.getElementsByName("rating").length > 0) {
-        answers = document.getElementsByName("rating");
-        gotAnswer = false;
-        for (let rad of answers) {
-            if (rad.checked) {
-                gotAnswer = true;
-                result = rad.value;
-                quiz.answers.push(new Answer(quiz.questions[quiz.current].type, rad.value,id));
-            }
-        }
-
-
-
+    
+    if(answers.length>0)
+    {  
+      gotAnswer=false;
+       for(let rad of answers)
+        {
+          if(rad.checked)
+          {
+            gotAnswer=true;
+            result = rad.value;
+            quiz.answers.push(new Answer(quiz.questions[quiz.current].type,rad.value));
+          }
+        } 
+       
+        if(!gotAnswer)
+          beginButton.setAttribute("disable","true");
+         
     }
     //для развернутого ответа 
     // если будут другие типы ответов изменим этот метод
-    else if (document.getElementsByName("ans_text").length > 0) {
-        gotAnswer = false;
-        answers = document.getElementsByName("ans_text");
-
-        // минимальное количество символов
-        if (answers[0].value.length > 1) {
-            gotAnswer = true;
-            quiz.answers.push(new Answer(quiz.questions[quiz.current].type, answers[0].value,id));
+    else  {
+      gotAnswer=true;
+       answers=document.getElementsByName("ans_text");    
+       if(answers.length > 0){
+          quiz.answers.push(new Answer(quiz.questions[quiz.current].type, answers.value));
         }
     }
-    else {
-        gotAnswer = true;
-    }
-
-    if (!gotAnswer)
-        beginButton.setAttribute("disable", "true");
-
     console.log(gotAnswer);
     return result;
 }
 
 
-function roll_up() {
-
-    if (show == true) {
-        document.getElementById("main").style.display = "none";
-        //Дойти до iframe
-        document.getElementById("wrapper").style.height = "10%";
-        show = false;
-    }
-    else {
-        document.getElementById("main").style.display = "table-cell";
-        //Дойти до iframe
-        document.getElementById("wrapper").style.height = "55%";
-        show = true;
-    }
-    //document.getElementById("main").setAttribute("hidden","true");
-}
-
-
 //Обновление теста
 function Update()
-{
-    if (quiz.questions[quiz.current] === undefined) return;
-    
-  document.getElementById("card").setAttribute("hidden","false");
+{   
     beginButton.setAttribute("disable","false");
      
     console.log(quiz.current);
     //сохраняем ответ на текущий вопрос 
-    var answer = saveAnswer(quiz.questions[quiz.current].id);
-    
+    var answer = saveAnswer();
+    console.log(gotAnswer);
     if(!gotAnswer) return;
 
 
@@ -194,9 +168,7 @@ function Update()
        //alert("заглушка");
        buttons.innerHTML="";
        document.getElementById("head").innerHTML = "Спасибо!"
-       console.log(quiz.answers);
-       console.log(JSON.stringify(quiz.answers));
-       SendData();
+      console.log(quiz.answers);
    }
    gotAnswer=true;
 }
@@ -226,13 +198,32 @@ function CreateText()
      //создаю radio button ,вешаю нужные аттрибуты 
      var textfield=document.createElement("TEXTAREA");
      textfield.setAttribute("maxlength", 500);
-     textfield.setAttribute("rows", 5);
+     textfield.setAttribute("rows", 4);
      //textfield.value = "aaaa";
      textfield.setAttribute("placeholder", "Введите текст...");
      textfield.setAttribute("name","ans_text");
      paragraph.appendChild(textfield);
      buttons.appendChild(paragraph);
      //console.log(textfield.value);
+}
+
+function roll_up()
+{
+
+	if(show == true){
+		document.getElementById("main").style.display = "none";
+		//Дойти до iframe
+		document.getElementById("wrapper").style.height = "10%";
+		show = false;
+	}
+	else
+	{
+		document.getElementById("main").style.display = "table-cell";
+		//Дойти до iframe
+		document.getElementById("wrapper").style.height = "55%";
+		show = true;
+	}
+	//document.getElementById("main").setAttribute("hidden","true");
 }
 
 function CreateAnswers_thirdType()
@@ -292,24 +283,11 @@ function CreateAnswers_firstType()
 }
 
 
-
 function Init()
 {            
        document.getElementById("head").innerHTML="Пожалуйста, пройдите наш опрос"+
        "\n" + "он поможет нам усовершенствовать наше приложение для вас."
        beginButton.innerHTML="Начнем!";
-}
-
-function SendData()
-{
-   
-    $.ajax({
-        url: '/Home/saveAnswers',
-        method: 'post',
-        dataType: 'html',
-        data: { data: JSON.stringify(quiz.answers) },
-        success: function (data) {
-            alert(data);
-        }
-    });
+       
+         
 }

@@ -11,6 +11,18 @@ body, html
    color: #111;
    
 }
+
+.rubutton
+{
+	position: fixed;
+	right: 2%;
+	border: 0;
+	border-radius: 10px;
+	background: #6477EB;
+	color: #fff;
+	transform:scale(1,0.5);
+}
+
  
 .wrapper
 {
@@ -28,7 +40,7 @@ body, html
  
 .quiz__head
 {
-   font-size: 20pt;
+   font-size: 1.2em;
    margin: 10px;
    margin-top: -10px;
 }
@@ -63,7 +75,7 @@ body, html
    color: #fff;
    padding: 10px 25px;
    width: 60%;
-   font-size: 15pt;
+   font-size: 1.0em;
    display: block;
    left: 20%;
    right: auto;

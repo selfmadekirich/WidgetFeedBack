@@ -13,18 +13,43 @@ using Newtonsoft.Json;
 namespace WebApplication1.Controllers
 {
     public interface IDBworker
-    {
-         Task<IEnumerable<Question>> GetAllQuestionsAsync();
-         Task<IEnumerable<Answer>> GetAllAnswersAsync();
+    {   
 
+        /// <summary>
+        /// получение всех вопросов из бд
+        /// </summary>
+        /// <returns></returns>
+         Task<IEnumerable<Question>> GetAllQuestionsAsync();
+
+        /// <summary>
+        ///  получение всех ответов из бд
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<Answer>> GetAllAnswersAsync();
+
+
+        /// <summary>
+        /// получение конкретного вопроса по его айди(не асинхронно)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
          Question GetQuestionIdNoTracking(int id);
 
+        /// <summary>
+        /// меняет содержимое вопроса по его айди ( используется для редакторования)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="new_q"></param>
         void ChangeQuestion(int id, Question new_q);
 
         void DeleteQuestion(int id);
 
         void Create(Question q);
 
+        /// <summary>
+        /// сохраняет ответы полученные от виджета 
+        /// </summary>
+        /// <param name="answers"></param>
         void SaveWidgetAnswers(IEnumerable<Answer> answers);
     }
 

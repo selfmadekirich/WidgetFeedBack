@@ -1,0 +1,37 @@
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <link type="text/css" rel="stylesheet" href="style.css">
+    <link type="text/css" rel="stylesheet" href="grade.css">
+</head>
+    <div class="wrapper" id="wrapper">
+		<div class="roll_up">
+			<button value="rubutton" id="rubutton" class="rubutton" onclick="roll_up()">
+				<svg class="rubutton-svg"  width="20" height="24">
+				 <defs>
+				  <filter id="svg_1_blur">
+				   <feGaussianBlur stdDeviation="0" in="SourceGraphic"/>
+				  </filter>
+				 </defs>
+				 <g>
+				  <title>Layer 1</title>
+				  <rect filter="url(#svg_1_blur)" id="svg_1" height="8" width="20" y="10" x="0" stroke-width="0" stroke="#ffffff" fill="#fff"/>
+				 </g>
+				</svg>
+			</button>
+		</div>
+        <main class="main" id="main">
+            <div class="quiz__head">
+                <div class="head__content" id="head">.</div>
+            </div>
+            <div class="card" id="card">
+				<div class="rating" id="rating">
+					<form class="rating-form">
+					</form>
+              </div>
+            </div>
+              <button value="check" id="check" class="button" onclick="Update()">Дальше!</button>
+                
+            </div>
+            <script src="script.js"></script>
+        </main>
+</div>
